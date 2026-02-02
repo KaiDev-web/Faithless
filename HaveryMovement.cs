@@ -17,7 +17,7 @@ public class HaveryMovementScript : MonoBehaviour
 
     void FixedUpdate()
     {
-        if(Keyboard.current.leftShiftKey.isPressed || Keyboard.current.rightShiftKey.isPressed)
+        if(Keyboard.current.leftShiftKey.isPressed || Keyboard.current.cKey.isPressed)
         {
             currentSpeed = runSpeed;
         }
