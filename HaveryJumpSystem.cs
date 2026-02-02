@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 
 public class HaveryJumpSystem : MonoBehaviour
 {
-    public float jump;
+    public float jumpForce = 7f;
     private Rigidbody2D rb;
 
     void Awake()
@@ -13,11 +13,14 @@ public class HaveryJumpSystem : MonoBehaviour
 
     void Update()
     {
-        if(Keyboard.current.zKey.isPressed)
+        if (Keyboard.current.zKey.wasPressedThisFrame)
         {
-            rb.AddForce(new Vector2(rb.linearVelocityX, jump)); 
+            Jump();
         }
-
     }
 
+    void Jump()
+    {
+        rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+    }
 }
