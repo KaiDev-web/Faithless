@@ -1,59 +1,63 @@
+using JetBrains.Annotations;
 using UnityEngine;
 
 public class EnemyAI : MonoBehaviour
 {
-    public enum statoNemico { inattivo, inseguimento, attacco };
-    public statoNemico statoAttuale;
-
+    public enum StatoBoss { inattivo, inseguimento, attacco };
+    public StatoBoss StatoAttuale;
+    
     public Transform giocatore;
     public float TempoProssimoAttacco;
     public float IntervalloAttacchi;
     public float distanzaAttacco;
     float distanza;
-    public RigidBody2D rb;
-    public float velocitaNemico = 4f;
+    public Rigidbody2D rb;
+    public float velocita = 6;
+    
+
+    void Start()
+    {
+        
+    }
 
     void Update()
     {
         distanza = Vector2.Distance(transform.position, giocatore.position);
 
-        switch(statoAttuale)
+        switch(StatoAttuale)
         {
-            case statoNemico.inattivo:
-
-            if(distanza < 4)
+            case StatoBoss.inattivo:
+            
+            if(distanza < 8)
                 {
-                    statoAttuale = statoNemico.inseguimento;
-                    Debug.Log("Current Enemy State: Following.");
+                   StatoAttuale = StatoBoss.inseguimento;
                 }
             break;
 
-            case statoNemico.inseguimento:
-            
-            transform.position = Vector2.MoveTowards(transform.position, giocatore.position, velocitaNemico * Time.deltaTime);
+            case StatoBoss.inseguimento:
+
+            transform.position = Vector2.MoveTowards(transform.position, giocatore.position, velocita * Time.deltaTime);
 
             if(distanza < distanzaAttacco)
                 {
-                    statoAttuale = statoNemico.attacco;
-                    Debug.Log("Current Enemy State: Attack.");
+                    StatoAttuale = StatoBoss.attacco;
                 }
             break;
 
-            case statoNemico.attacco:
+            case StatoBoss.attacco:
 
             if(Time.time >= TempoProssimoAttacco)
                 {
                     TempoProssimoAttacco = Time.time + IntervalloAttacchi;
                     EseguiAttacco();
-                    Debug.Log("Setting Attack.");
                 }
-
-            if(distanza > 4)
+            
+            if(distanza > 8)
                 {
-                    statoAttuale = statoNemico.inseguimento;
-                    Debug.Log("Current Enemy State: Following.");
+                    StatoAttuale = StatoBoss.inseguimento;
                 }
             break;
+
         }
 
         if(giocatore.position.x < transform.position.x)
@@ -64,6 +68,13 @@ public class EnemyAI : MonoBehaviour
         {
             transform.localScale = new Vector3(1, 1, 1);
         }
+
+    }
+
+    public void EseguiAttacco()
+    {
+        
     }
 
 }
+
