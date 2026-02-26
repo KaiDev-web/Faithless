@@ -17,6 +17,7 @@ public class Checkpoint_System : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision)
     {
+        Debug.Log("Connettendo con TAG");
         if(collision.CompareTag("Checkpoint"))
         {
             PlayerPrefs.SetFloat(keyX, collision.transform.position.x);
