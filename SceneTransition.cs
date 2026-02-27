@@ -18,7 +18,7 @@ public class Scene_Transition : MonoBehaviour
 
     void OnEnterTrigger2D(Collider2D collision)
     {
-        if(collision.CompareTag("Player Spritesheet_0"))
+        if(collision.CompareTag("Player"))
         {
             SceneManager.LoadScene(nomeScenaDaCaricare);
         }  
