@@ -28,6 +28,9 @@ public class Checkpoint_System : MonoBehaviour
             PlayerPrefs.Save();
 
             Debug.Log("Posizione salvata:" + collision.transform.position);
+            StopAllCoroutines();
+            
+            StartCoroutine(ShowSaveText());
         }      
     }
 
