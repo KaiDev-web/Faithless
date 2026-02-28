@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Timeline;
+using TMPro;
 
 public class Checkpoint_System : MonoBehaviour
 {
