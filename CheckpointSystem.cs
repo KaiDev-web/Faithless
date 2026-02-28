@@ -5,10 +5,13 @@ public class Checkpoint_System : MonoBehaviour
 {
     public string keyX = "SavepointX";
     public string keyY = "SavepointY";
+    public float textWaitTime = 1f;
+    public TextMeshProUGUI savedPositionTxt;
 
     void Start()
     {
-        
+        savedPositionTxt.gameObject.SetActive(false);
+
         float x = PlayerPrefs.GetFloat(keyX, transform.position.x);
         float y = PlayerPrefs.GetFloat(keyY, transform.position.y);
         transform.position = new Vector2(x, y);
@@ -26,5 +29,12 @@ public class Checkpoint_System : MonoBehaviour
 
             Debug.Log("Posizione salvata:" + collision.transform.position);
         }      
+    }
+
+    IEnumerator ShowSaveText()
+    {
+        savedPositionTxt.gameObject.SetActive(true);
+        yield return new WaitForSeconds(textWaitTime);
+        savedPositionTxt.gameObject.SetActive(false);
     }
 }
