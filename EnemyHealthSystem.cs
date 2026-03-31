@@ -1,30 +1,28 @@
+using System;
 using UnityEngine;
 
-public class EnemyHealthSystem : MonoBehaviour
+public class UniversalEnemyHealth : MonoBehaviour
 {
-    public float maxHealth;
-    public float actualHealth;
-
-    void Start()
+    public GameObject attackHitboxLeft;
+    public GameObject attackHitBoxUp;
+    public GameObject attackHitBoxDown;
+    public float health;
+    
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        actualHealth = maxHealth;
-    }
-
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.CompareTag("AttackHitBox")) 
+        if (other.gameObject.CompareTag("AttackHitbox"))
         {
-            actualHealth = maxHealth - 3; 
-            Debug.Log("Damage Inflicted.");
+            health -= 3;
+            
+            Debug.Log("Enemy attacked.");
         }
 
-        if (actualHealth -= 0) 
+        if (health <= 0)
         {
-            Debug.Log("Enemy killed.");
-        }
-        else
-        {
-            Debug.Log("Everything works fine.");
+            Destroy(gameObject);
+            
+            Debug.Log("Let's go! The enemy died.");
         }
     }
 }
+
