@@ -1,62 +1,68 @@
+using System.Collections;
 using UnityEngine;
 using TMPro;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.LowLevel;
 
 public class DialogueSystem : MonoBehaviour
 {
-    public float waitTime = 3f;
-    public TextMeshProUGUI text1;
-    public TextMeshProUGUI text2;
-    public TextMeshProUGUI text3;
+    public TextMeshProUGUI textComponent;
+    public string[] lines;
+    public float textSpeed;
+
+    private int index;
     
-    public TextMeshProUGUI text4;
-    public Canvas background;
 
-    private void Start()
+    void Start()
     {
-        text1.gameObject.SetActive(false);
-        text2.gameObject.SetActive(false);
-        text3.gameObject.SetActive(false);
-        text4.gameObject.SetActive(false);
-
-        background.gameObject.SetActive(false);
-        
+        textComponent.text = string.Empty;
+        StartDialogue();
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+
+    void Update()
     {
-        if (collision.CompareTag("Player"))
+        if (Keyboard.current.spaceKey.wasPressedThisFrame)
         {
-            Debug.Log("Starting Coroutine. Searching for texts");
-            StartCoroutine(StartDialogue());
+            if (textComponent.text == lines[index])
+            {
+                NextLine();
+            }
+            else
+            {
+                StopAllCoroutines();
+                textComponent.text = lines[index];
+            }
         }
     }
 
-    IEnumerator StartDialogue()
+    void StartDialogue()
     {
-        Debug.Log("Starting Dialogue");
-
-        background.gameObject.SetActive(true);
-        
-        text1.gameObject.SetActive(true);
-        yield return new WaitForSeconds(waitTime);
-        text1.gameObject.SetActive(false);
-        
-        text2.gameObject.SetActive(true);
-        yield return new WaitForSeconds(waitTime);
-        text2.gameObject.SetActive(false);
-        
-        text3.gameObject.SetActive(true);
-        yield return new WaitForSeconds(waitTime);
-        text3.gameObject.SetActive(false);
-        
-        text4.gameObject.SetActive(true);
-        yield return new WaitForSeconds(waitTime);
-        text4.gameObject.SetActive(false);
-
-        background.gameObject.SetActive(false);
-        
-        Debug.Log("Ending Dialogue.");
+        index = 0;
+        StartCoroutine(TypeLine());
     }
-    
-    
+
+    IEnumerator TypeLine()
+    {
+        foreach(char c in lines[index].ToCharArray())
+        {
+            textComponent.text += c;
+            yield return new WaitForSeconds(textSpeed);
+        }
+    }
+
+    void NextLine()
+    {
+        if (index < lines.Length - 1)
+        {
+            index++;
+            textComponent.text = string.Empty;
+            StartCoroutine(TypeLine());
+        }
+        else
+        {
+            gameObject.SetActive(false);
+        }
+            
+    }
 }
